@@ -7,7 +7,39 @@
 </head>
 <body>
   <h1>Shop</h1>
-  <p>Cette page servira à acheter des Coins / Premium via le web.</p>
+  <p id="status">Préparation du paiement…</p>
   <p><a href="/">Retour</a></p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const packId = params.get('packId');
+    const product = params.get('product');
+
+    // Mets ici TES vrais liens Stripe Payment Links
+    const paymentLinksByPackId = {
+      pack_beginner: "https://buy.stripe.com/XXXX_BEGINNER",
+      pack_popular: "https://buy.stripe.com/XXXX_POPULAR",
+      pack_bestseller: "https://buy.stripe.com/XXXX_BESTSELLER",
+      pack_pro: "https://buy.stripe.com/XXXX_PRO",
+      pack_expert: "https://buy.stripe.com/XXXX_EXPERT",
+      pack_whale: "https://buy.stripe.com/XXXX_WHALE"
+    };
+
+    const paymentLinksByProduct = {
+      premium_unlock: "https://buy.stripe.com/XXXX_PREMIUM",
+      subscription: "https://buy.stripe.com/XXXX_SUBSCRIPTION"
+    };
+
+    let target = null;
+    if (packId && paymentLinksByPackId[packId]) target = paymentLinksByPackId[packId];
+    if (!target && product && paymentLinksByProduct[product]) target = paymentLinksByProduct[product];
+
+    if (target) {
+      window.location.replace(target);
+    } else {
+      document.getElementById('status').textContent =
+        "Aucun produit sélectionné. Revenez dans l’app et choisissez un pack.";
+    }
+  </script>
 </body>
 </html>
